@@ -4,7 +4,7 @@ class vote_controler{
         try {
             //const logiciels = await logiciel_model.list_Logiciel();
             
-            reponse.status(200).send("test");
+            reponse.status(200).send( JSON.stringify("test"));
         } catch (error) {
             reponse.status(500).send({message: "erreur interne, "+error.message});
         }
