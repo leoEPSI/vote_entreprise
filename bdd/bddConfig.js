@@ -6,6 +6,8 @@ var con = mysql.createConnection({
   password: "root"
 });
 
+module.exports = con;
+/*
 con.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
@@ -14,3 +16,4 @@ con.connect(function(err) {
     console.log("Database created");
   });
 });
+*/
