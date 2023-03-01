@@ -1,6 +1,4 @@
-export interface VoteArgs {
+export interface addVoteArgs {
   valeurVote: boolean;
   date: Date;
-  idProjet: number;
-  idUtilisateur: number;
 }
