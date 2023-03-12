@@ -12,8 +12,10 @@ class utilisateur_controler{
 
     async get_utilisateur(request, reponse){
         try {
-            //const logiciels = await logiciel_model.list_Logiciel();
-            //reponse.status(200).send(logiciels);
+            const idUtilisateur = request.params.id;
+
+            let utilisateur_ = await utilisateur.get_utilisateur(idUtilisateur);
+            reponse.status(200).send(utilisateur_);
         } catch (error) {
             reponse.status(500).send({message: "erreur interne, "+error.message});
         }
@@ -21,8 +23,10 @@ class utilisateur_controler{
 
     async add_utilisateur(request, reponse){
         try {
-            //const logiciels = await logiciel_model.list_Logiciel();
-            //reponse.status(200).send(logiciels);
+            const nomUtilisateur = request.query.nomUtilisateur;
+
+            let utilisateur_ = await utilisateur.add_utilisateur(nomUtilisateur);
+            reponse.status(200).send(utilisateur_);
         } catch (error) {
             reponse.status(500).send({message: "erreur interne, "+error.message});
         }
@@ -30,8 +34,10 @@ class utilisateur_controler{
 
     async delete_utilisateur(request, reponse){
         try {
-            //const logiciels = await logiciel_model.list_Logiciel();
-            //reponse.status(200).send(logiciels);
+            const idUtilisateur = request.params.id;
+
+            let utilisateur_ = await utilisateur.delete_utilisateur(idUtilisateur);
+            reponse.status(200).send(utilisateur_);
         } catch (error) {
             reponse.status(500).send({message: "erreur interne, "+error.message});
         }

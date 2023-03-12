@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/vote', vote_route);
-app.use('/utilisateur', utilisateur_route);
+app.use('/user', utilisateur_route);
 app.use('/projet', projet_route);
 
 app.listen(port, ()=>{

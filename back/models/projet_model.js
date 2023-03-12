@@ -2,25 +2,43 @@ const con = require('../../bdd/bddConfig');
 
 class projet{
 
-    async list_projet(ancienNomSociete, newNomSociete){
-        //console.log(ancienNomSociete + " " + newNomSociete);
-        //return await this.query('UPDATE societe SET nom = ?  WHERE nom = ?',[newNomSociete, ancienNomSociete]);
-        return "yes";
+    async execute(querry){
+        try {
+            const result = await new Promise((resolve, reject) => {
+              con.query(querry, (err, result, fields) => {
+                if (err) {
+                  reject(err);
+                } else {
+                  resolve(result);
+                }
+              });
+            });
+            return result;
+          } catch (error) {
+            throw error;
+          }
     }
 
-    async get_projet(ancienNomSociete, newNomSociete){
-        //console.log(ancienNomSociete + " " + newNomSociete);
-        return await this.query('UPDATE societe SET nom = ?  WHERE nom = ?',[newNomSociete, ancienNomSociete]);
+    async list_projet(){
+        return this.execute('SELECT * FROM projet');
     }
 
-    async add_projet(ancienNomSociete, newNomSociete){
-        //console.log(ancienNomSociete + " " + newNomSociete);
-        return await this.query('UPDATE societe SET nom = ?  WHERE nom = ?',[newNomSociete, ancienNomSociete]);
+    async get_projet(idProjet){
+        return this.execute(`SELECT * FROM projet WHERE idProjet = ${idProjet}`);
     }
 
-    async delete_projet(ancienNomSociete, newNomSociete){
-        //console.log(ancienNomSociete + " " + newNomSociete);
-        return await this.query('UPDATE societe SET nom = ?  WHERE nom = ?',[newNomSociete, ancienNomSociete]);
+    async add_projet(nomProjet, description){
+        return this.execute(
+            `INSERT INTO projet (nomProjet, description) 
+            VALUES ('${nomProjet}', '${description}')`
+            );
+    }
+
+    async delete_projet(idProjet){
+        return this.execute(
+            `DELETE FROM projet
+            WHERE idProjet = ${idProjet};`
+            );
     }
 }
 
