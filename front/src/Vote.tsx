@@ -15,22 +15,19 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { addVote, getVote } from "./services/api";
+import { addVote, getListProjet } from "./services/api";
 import { useQuery } from "@tanstack/react-query";
 
 function Vote() {
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const dayjs = require("dayjs");
-  const [votes, setVotes] = React.useState("");
-  const { data } = useQuery(["votes"], async () => await getVote(), {
-    retry: false,
-  });
-
-  React.useEffect(() => {
-    if (data) {
-      setVotes(data);
+  const { data } = useQuery(
+    ["getListProjet"],
+    async () => await getListProjet(),
+    {
+      retry: false,
     }
-  }, [data]);
+  );
 
   const validationSchema = Yup.object({
     valeurVote: Yup.boolean().required("Veuillez choisir une valeur"),
@@ -53,8 +50,10 @@ function Vote() {
   });
 
   const addVoteArgs = {
-    valeurVote: formik.values.valeurVote,
+    valeurVote: formik.values.valeurVote ? 1 : 0,
     date: formik.values.date,
+    idUtilisateurVote: 1,
+    idProjetVote: 1,
   };
 
   const { refetch } = useQuery(
@@ -69,55 +68,29 @@ function Vote() {
   const handleDialogOpen = () => {
     setDialogOpen(true);
   };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
   return (
     <Stack>
       <Grid container spacing={24} justifyContent="center">
-        <Grid item xs={3}>
-          <Card>
-            <Button sx={{ width: "100%" }} onClick={handleDialogOpen}>
-              <CardActions>
-                <CardContent>
-                  <Typography variant="h5">Vote</Typography>
-                </CardContent>
-              </CardActions>
-            </Button>
-          </Card>
-        </Grid>
-        <Grid item xs={3}>
-          <Card>
-            <Button sx={{ width: "100%" }}>
-              <CardActions>
-                <CardContent>
-                  <Typography variant="h5">Vote</Typography>
-                </CardContent>
-              </CardActions>
-            </Button>
-          </Card>
-        </Grid>
-        <Grid item xs={3}>
-          <Card>
-            <Button sx={{ width: "100%" }}>
-              <CardActions>
-                <CardContent>
-                  <Typography variant="h5">Vote</Typography>
-                </CardContent>
-              </CardActions>
-            </Button>
-          </Card>
-        </Grid>
-        <Grid item xs={3}>
-          <Card>
-            <Button sx={{ width: "100%" }}>
-              <CardActions>
-                <CardContent>
-                  <Typography variant="h5">Vote</Typography>
-                </CardContent>
-              </CardActions>
-            </Button>
-          </Card>
-        </Grid>
+        {data?.map((projet) => (
+          <Grid item xs={3}>
+            <Card>
+              <Button sx={{ width: "100%" }} onClick={handleDialogOpen}>
+                <CardActions>
+                  <CardContent>
+                    <Typography variant="h5">{projet.nomProjet}</Typography>
+                  </CardContent>
+                </CardActions>
+              </Button>
+            </Card>
+          </Grid>
+        ))}
       </Grid>
-      <Dialog open={dialogOpen}>
+      <Dialog open={dialogOpen} onClose={handleDialogClose}>
         <DialogTitle>Vote</DialogTitle>
         <form onSubmit={formik.handleSubmit}>
           <FormGroup>
