@@ -1,5 +1,5 @@
 export interface getListVoteArgs {
-  idProjet: string;
+  id: number;
 }
 
 export interface getListVoteOutput {

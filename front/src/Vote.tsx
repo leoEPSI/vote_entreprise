@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { addVote, getListProjet } from "./services/api";
+import { addVote, getListProjet, getListVote } from "./services/api";
 import { useQuery } from "@tanstack/react-query";
 
 function Vote() {
@@ -56,11 +56,23 @@ function Vote() {
     idProjetVote: 1,
   };
 
+  const getListVoteArgs = {
+    id: 1,
+  };
+
   const { refetch } = useQuery(
     ["addVote", addVoteArgs],
     async () => await addVote(addVoteArgs),
     {
       enabled: false,
+      retry: false,
+    }
+  );
+
+  const { data: votes } = useQuery(
+    ["getListVote"],
+    async () => await getListVote(getListVoteArgs),
+    {
       retry: false,
     }
   );
@@ -104,6 +116,8 @@ function Vote() {
               sx={{ marginBottom: "30px" }}
             />
           </FormGroup>
+          <Typography>{`Votes pour : ${votes?.valeurPour}`}</Typography>
+          <Typography>{`Votes contre : ${votes?.valeurContre}`}</Typography>
           <Button type="submit">Valider</Button>
         </form>
       </Dialog>

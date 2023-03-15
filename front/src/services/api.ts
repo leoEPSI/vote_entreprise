@@ -4,14 +4,18 @@ import {
   addVoteArgs,
   addVoteOutput,
   getListProjetOutput,
+  getListVoteArgs,
+  getListVoteOutput,
   getProjetArgs,
   getVoteArgs,
 } from "../types";
 
 const API_URL = "http://localhost:8080";
 
-export async function getListVote(): Promise<string> {
-  const response = await fetch(`${API_URL}/vote`, {
+export async function getListVote(
+  args: getListVoteArgs
+): Promise<getListVoteOutput> {
+  const response = await fetch(`${API_URL}/vote/${args.id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
