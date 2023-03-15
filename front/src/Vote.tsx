@@ -86,7 +86,7 @@ function Vote() {
   };
 
   return (
-    <Stack>
+    <Stack marginTop="10vh">
       <Grid container spacing={24} justifyContent="center">
         {data?.map((projet) => (
           <Grid item xs={3}>
