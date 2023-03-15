@@ -2,6 +2,7 @@ con = require("./bddConfig");
 
 tab = [];
 tab.push("CREATE DATABASE IF NOT EXISTS vote");
+tab.push("USE vote");
 tab.push(
   "CREATE TABLE IF NOT EXISTS `user` (`idUtilisateur` int(11) NOT NULL AUTO_INCREMENT,`nomUtilisateur` varchar(50) DEFAULT NULL,PRIMARY KEY (`idUtilisateur`));"
 );
@@ -27,7 +28,10 @@ tab.push(
 
 tab.forEach((dbTable) => {
   con.query(dbTable, function (err, result) {
-    if (err) throw err;
+    if (err) {
+      console.log(dbTable);      
+      throw err;
+    }
     console.log("Database created");
   });
 });
