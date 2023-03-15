@@ -19,8 +19,12 @@ class vote{
           }
     }
 
-    async list_vote(){
-        return this.execute('SELECT * FROM vote');
+    async list_vote_pour(idProjet){
+        return this.execute(`SELECT * FROM vote WHERE idProjetVote = ${idProjet} AND valeurVote = 1`);
+    }
+
+    async list_vote_contre(idProjet){
+      return this.execute(`SELECT * FROM vote WHERE idProjetVote = ${idProjet} AND valeurVote = 0`);
     }
 
     async get_vote(idVote){
@@ -28,16 +32,6 @@ class vote{
     }
 
     async add_vote(valeurVote, date, idUtilisateurVote, idProjetVote){
-        
-        // seulement oui ou non
-        if (valeurVote != 1 && valeurVote != 0)
-            throw new Error("valeurVote doit être égal à 1 ou 0");
-        
-        // vérifier que l'utilisateur n'a pas déjà voté pour ce projet
-        const same_vote = await this.execute(`SELECT * FROM vote WHERE idUtilisateurVote = ${idUtilisateurVote} AND idProjetVote = ${idProjetVote}`);
-        if (same_vote.length > 0)
-            throw new Error("Un utilisateur ne peut voter qu'une seule fois pour un projet");
-
         const dateObject = new Date(date);
         let date_date = dateObject.toISOString().slice(0, 19).replace('T', ' ');
         
@@ -45,6 +39,10 @@ class vote{
             `INSERT INTO vote (valeurVote, date, idUtilisateurVote, idProjetVote) 
             VALUES ('${valeurVote}', '${date_date}', '${idUtilisateurVote}', '${idProjetVote}')`
             );
+    }
+
+    async verify_vote(idUtilisateurVote, idProjetVote){
+      return this.execute(`SELECT * FROM vote WHERE idUtilisateurVote = ${idUtilisateurVote} AND idProjetVote = ${idProjetVote}`);
     }
 
     async delete_vote(idVote){
